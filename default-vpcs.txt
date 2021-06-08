@@ -1,0 +1,36 @@
+in eu-north-1 \n Found default vpc vpc-df4495b6
+in ap-south-1 \n Found default vpc vpc-af9895c7
+in eu-west-3 \n Found default vpc vpc-e0cfc189
+in eu-west-2 \n Found default vpc vpc-21285449
+in eu-west-1 \n Found default vpc vpc-0712556b92610c929
+in ap-northeast-3 \n Found default vpc vpc-12adc87b
+in ap-northeast-2 \n Found default vpc vpc-2df92e46
+in ap-northeast-1 \n Found default vpc vpc-db797dbc
+in sa-east-1 \n Found default vpc vpc-926a6ef5
+in ca-central-1 \n Found default vpc vpc-ae5a1fc6
+in ap-southeast-1 \n Found default vpc vpc-d0ebe1b7
+in ap-southeast-2 \n Found default vpc vpc-b14079d6
+in eu-central-1 \n Found default vpc vpc-bb78bfd1
+in us-east-1 \n Found default vpc vpc-0a86272fcb6bc8070
+in us-east-2 \n Found default vpc vpc-0a255b64854c66581
+in us-west-1 \n Found default vpc vpc-d98298be
+in eu-north-1 Found default vpc vpc-df4495b6
+in ap-south-1 Found default vpc vpc-af9895c7
+in eu-west-3 Found default vpc vpc-e0cfc189
+in eu-west-2 Found default vpc vpc-21285449
+in eu-west-1 Found default vpc vpc-0712556b92610c929
+in ap-northeast-3 Found default vpc vpc-12adc87b
+in ap-northeast-2 Found default vpc vpc-2df92e46
+in ap-northeast-1 Found default vpc vpc-db797dbc
+in sa-east-1 Found default vpc vpc-926a6ef5
+in ca-central-1 Found default vpc vpc-ae5a1fc6
+in ap-southeast-1 Found default vpc vpc-d0ebe1b7
+in ap-southeast-2 Found default vpc vpc-b14079d6
+in eu-central-1 Found default vpc vpc-bb78bfd1
+in us-east-1 Found default vpc vpc-0a86272fcb6bc8070
+in us-east-2 Found default vpc vpc-0a255b64854c66581
+in us-west-1 Found default vpc vpc-d98298be
+in eu-west-1 Found default vpc vpc-0712556b92610c929
+in eu-central-1 Found default vpc vpc-bb78bfd1
+in us-east-1 Found default vpc vpc-0a86272fcb6bc8070
+in us-east-2 Found default vpc vpc-0a255b64854c66581
