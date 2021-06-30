@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# AWS_PROFILE="dev-test"
+AWS_PROFILE="dev-test"
 if [ "$AWS_PROFILE" = "" ]; then
   echo "No AWS_PROFILE set"
   exit 1
