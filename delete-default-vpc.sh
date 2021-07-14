@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-AWS_PROFILE="dev-test"
-if [ "$AWS_PROFILE" = "" ]; then
-  echo "No AWS_PROFILE set"
-  exit 1
-fi
+# AWS_PROFILE="dev-test"
+# if [ "$AWS_PROFILE" = "" ]; then
+#   echo "No AWS_PROFILE set"
+#   exit 1
+# fi
 
 
 for region in $(aws ec2 describe-regions --region eu-west-1 | jq -r .Regions[].RegionName); do
