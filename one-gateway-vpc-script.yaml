@@ -1,0 +1,199 @@
+AWSTemplateFormatVersion: 2010-09-09
+# This creates a VPC with two public subnets and two private subnets in two Availability Zones,
+# together with a NAT Gateway and associated routing. Change the Availability Zone locations as needed.
+
+# Important: this configures various AWS services and there are costs associated with these services.
+# Please see the AWS Pricing pages for details. You are responsible for any AWS costs incurred.
+
+# Usage from command line:
+#   aws cloudformation --region <<YOUR-REGION>> create-stack --stack-name vpc- --template-body file://vpc-setup.yaml
+Resources:
+  ## VPC
+  PubPrivateVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.34.0.0/22
+
+  ## SUBNETS
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "0"
+          - Fn::GetAZs: ""
+      CidrBlock: 10.34.0.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "0"
+                    - Fn::GetAZs: ""
+                - PUB
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "1"
+          - Fn::GetAZs: ""
+      CidrBlock: 10.34.1.0/24
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "1"
+                    - Fn::GetAZs: ""
+                - PUB
+      MapPublicIpOnLaunch: true
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "0"
+          - Fn::GetAZs: ""
+      CidrBlock: 10.34.2.0/24
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "0"
+                    - Fn::GetAZs: ""
+                - PVT
+      MapPublicIpOnLaunch: false
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "1"
+          - Fn::GetAZs: ""
+      CidrBlock: 10.34.3.0/24
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "1"
+                    - Fn::GetAZs: ""
+                - PVT
+      MapPublicIpOnLaunch: false
+
+  ## INTERNET GATEWAY
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  GatewayToInternet:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  ## PUBLIC ROUTING
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayToInternet
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  ## NAT GATEWAY
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn: NatPublicIP
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      AllocationId: !GetAtt NatPublicIP.AllocationId
+
+  ## ELASTIC IP
+  NatPublicIP:
+    Type: AWS::EC2::EIP
+    DependsOn: PubPrivateVPC
+    Properties:
+      Domain: vpc
+
+  ## PRIVATE ROUTING
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      NatGatewayId: !Ref NatGateway
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable
+
+Outputs:
+  PublicSubnetA:
+    Value:
+      Ref: PublicSubnet1
+    Export:
+      Name: PublicSubnetA
+  PublicSubnetB:
+    Value:
+      Ref: PublicSubnet2
+    Export:
+      Name: PublicSubnetB
+  PrivateSubnetA:
+    Value:
+      Ref: PrivateSubnet1
+    Export:
+      Name: PrivateSubnetA
+  PrivateSubnetB:
+    Value:
+      Ref: PrivateSubnet2
+    Export:
+      Name: PrivateSubnetB
+  VpcId:
+    Value:
+      Ref: PubPrivateVPC
+    Export:
+      Name: VPC
