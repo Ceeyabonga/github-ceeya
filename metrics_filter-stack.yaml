@@ -10,7 +10,7 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-        - Endpoint: "abcd@abc.com"
+        - Endpoint: "ceeyasns@gmail.com"
           Protocol: email
 
   # Create CloudWatch log group
@@ -23,6 +23,7 @@ Resources:
   # Create metric filter
   UnauthorizedApiCalls:
     Type: AWS::Logs::MetricFilter
+    DependsOn: snstopic
     Properties:
       LogGroupName:
         Ref: "snstopic"
@@ -37,13 +38,14 @@ Resources:
     Type: AWS::CloudWatch::Alarm
     DependsOn: UnauthorizedApiCalls
     Properties:
-      AlarmName: UnauthorizedApiCallsAlarm
-      AlarmActions: !Ref snstopic
+      AlarmName: Unauthorized_ApiCallsAlarm
+      AlarmActions:
+      - Ref: MySNSTopic
       MetricName: UnauthorizedApiCalls
       Namespace: LogMetrics
       ComparisonOperator: GreaterThanOrEqualToThreshold
       EvaluationPeriods: "1"
-      Period: "5"
+      Period: "10"
       Statistic: Sum
       Threshold: "1"
       TreatMissingData: breaching
