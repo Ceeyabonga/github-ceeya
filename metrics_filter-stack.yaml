@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: "2010-09-09"
+#Parameters:
+#EmailAddress:
+#Type: String
+#Description: The email address to use for alarm notifications.
+
+Resources:
+  # Create SNS and email subscription
+  MySNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: "abcd@abc.com"
+          Protocol: email
+
+  # Create CloudWatch log group
+  snstopic:
+    Type: AWS::Logs::LogGroup
+    DependsOn: MySNSTopic
+    Properties:
+      RetentionInDays: 7
+
+  # Create metric filter
+  UnauthorizedApiCalls:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName:
+        Ref: "snstopic"
+      FilterPattern: '{($.errorCode="AccessDenied*")}'
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: "unauthorized-api-calls"
+          MetricName: "LogMetrics"
+
+  # Create alarm
+  UnauthorizedApiCallsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DependsOn: UnauthorizedApiCalls
+    Properties:
+      AlarmName: UnauthorizedApiCallsAlarm
+      AlarmActions: !Ref snstopic
+      MetricName: UnauthorizedApiCalls
+      Namespace: LogMetrics
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: "1"
+      Period: "5"
+      Statistic: Sum
+      Threshold: "1"
+      TreatMissingData: breaching

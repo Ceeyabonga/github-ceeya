@@ -1,0 +1,378 @@
+AWSTemplateFormatVersion: 2010-09-09
+# This creates a VPC with two public subnets and two private subnets in two Availability Zones,
+# together with a NAT Gateway and associated routing. Change the Availability Zone locations as needed.
+
+# Important: this configures various AWS services and there are costs associated with these services.
+# Please see the AWS Pricing pages for details. You are responsible for any AWS costs incurred.
+
+Metadata:
+  Authors:
+    Description: AWS Central Cloud Team (awscct@liberty.co.za)
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "Network configuration:"
+        Parameters:
+          - VPCCIDR
+          - PubSubA
+          - PubSubB
+          - PvtSubA
+          - PvtSubB
+          - DomainName
+      - Label:
+          default: "Tagging:"
+        Parameters:
+          - Name
+          - TECSYSTEM
+          - TECENVIRONMENT
+          - BUSOU
+          - TECAPPLICATIONROLE
+          - BUSOWNER
+          - BUSPROJECT
+          - BUSPRODUCT
+          - AUTOLIFETIME
+    ParameterLabels:
+      VPCCIDR:
+        default: What is the CIDR range? (x.x.x.x/22)
+      PubSubA:
+        default: What is network range for Public subnet A in AZ-A? (x.x.x.x/25)
+      PubSubB:
+        default: What is network range for Public subnet B in AZ-B? (x.x.x.x/25)
+      PvtSubA:
+        default: What is network range for Private subnet A in AZ-A? (x.x.x.x/24)
+      PvtSubB:
+        default: What is network range for Private subnet B in AZ-B? (x.x.x.x/24)
+      DomainName:
+        default: What is the domain name for this network?
+      TECSYSTEM:
+        default: Enter system tag.
+      TECENVIRONMENT:
+        default: Select operating environment.
+      BUSOU:
+        default: OU that this service belongs to.
+      Name:
+        default: System Name.
+      TECAPPLICATIONROLE:
+        default: Function of the resource.
+      BUSOWNER:
+        default: email address in lower case.
+      BUSPROJECT:
+        default: Project that the resource belongs to.
+      BUSPRODUCT:
+        default: Product related to this resource.
+      AUTOLIFETIME:
+        default: Is the resource temporary or Permanent.
+Parameters:
+  TECSYSTEM:
+    Default: NETWORK
+    Type: String
+  TECENVIRONMENT:
+    Type: String
+    AllowedValues:
+      - CT-PROD
+      - CT-DEV
+      - INT-STLBONL-DEV
+    Default: CT-DEV
+    ConstraintDescription: Must be a valin environment.
+    Type: String
+  Name: 
+    Default: NETWORK_STACK
+    Type: String
+  BUSOU:
+    Type: String
+    Default: DEV-OU
+  TECAPPLICATIONROLE:
+    Type: String
+    Default: NETWORK_INFRASTRUCTURE
+  BUSOWNER:
+    Type: String
+    Default: aws.interim.CT.slbcom.dev@liberty.co.za
+  BUSPROJECT:
+    Type: String
+    Default: CCT_INFRA
+  BUSPRODUCT:
+    Type: String
+    Default: AWSCCT_SERVICES
+  AUTOLIFETIME:
+    Type: String
+    Default: PERMANENT
+  VPCCIDR:
+    Type: String
+  PubSubA:
+    Type: String
+  PubSubB:
+    Type: String
+  PvtSubA:
+    Type: String
+  PvtSubB:
+    Type: String
+  taggingconfiglocation:
+    Type: String
+    Default: s3://ct-ire-slbcom-dev-scriptlib/Tags.json
+  DomainName:
+    Type: String
+    Default: eu-west-1.compute.internal
+Resources:
+  ## VPC
+  PubPrivateVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      Fn::Transform:
+        Name: AWS::Include
+        Parameters:
+          Location: !Ref taggingconfiglocation
+
+  ## DHCP OPTION SET
+  DHCPOptions:
+    Type: AWS::EC2::DHCPOptions
+    Properties:
+      DomainName: !Ref DomainName
+      DomainNameServers:
+        - AmazonProvidedDNS
+  VDOP:
+    Type: AWS::EC2::VPCDHCPOptionsAssociation
+    Properties:
+      DhcpOptionsId: !Ref DHCPOptions
+      VpcId: !Ref PubPrivateVPC
+
+  ## SUBNETS
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "0"
+          - Fn::GetAZs: ""
+      CidrBlock: !Ref PubSubA
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "0"
+                    - Fn::GetAZs: ""
+                - PUB
+        - Key: TECENVIRONMENT
+          Value: !Ref TECENVIRONMENT
+        - Key: TECAPPLICATIONROLE
+          Value: !Ref TECAPPLICATIONROLE
+        - Key: TECSYSTEM
+          Value: !Ref TECSYSTEM
+        - Key: BUSOU
+          Value: !Ref BUSOU
+        - Key: BUSOWNER
+          Value: !Ref BUSOWNER
+        - Key: BUSPROJECT
+          Value: !Ref BUSPROJECT
+        - Key: BUSPRODUCT
+          Value: !Ref BUSPRODUCT
+        - Key: AUTOLIFETIME
+          Value: !Ref AUTOLIFETIME
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "1"
+          - Fn::GetAZs: ""
+      CidrBlock: !Ref PubSubB
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "1"
+                    - Fn::GetAZs: ""
+                - PUB
+        - Key: TECENVIRONMENT
+          Value: !Ref TECENVIRONMENT
+        - Key: TECAPPLICATIONROLE
+          Value: !Ref TECAPPLICATIONROLE
+        - Key: TECSYSTEM
+          Value: !Ref TECSYSTEM
+        - Key: BUSOU
+          Value: !Ref BUSOU
+        - Key: BUSOWNER
+          Value: !Ref BUSOWNER
+        - Key: BUSPROJECT
+          Value: !Ref BUSPROJECT
+        - Key: BUSPRODUCT
+          Value: !Ref BUSPRODUCT
+        - Key: AUTOLIFETIME
+          Value: !Ref AUTOLIFETIME
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "0"
+          - Fn::GetAZs: ""
+      CidrBlock: !Ref PvtSubA
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "0"
+                    - Fn::GetAZs: ""
+                - PVT
+        - Key: TECENVIRONMENT
+          Value: !Ref TECENVIRONMENT
+        - Key: TECAPPLICATIONROLE
+          Value: !Ref TECAPPLICATIONROLE
+        - Key: TECSYSTEM
+          Value: !Ref TECSYSTEM
+        - Key: BUSOU
+          Value: !Ref BUSOU
+        - Key: BUSOWNER
+          Value: !Ref BUSOWNER
+        - Key: BUSPROJECT
+          Value: !Ref BUSPROJECT
+        - Key: BUSPRODUCT
+          Value: !Ref BUSPRODUCT
+        - Key: AUTOLIFETIME
+          Value: !Ref AUTOLIFETIME
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone:
+        Fn::Select:
+          - "1"
+          - Fn::GetAZs: ""
+      CidrBlock: !Ref PvtSubB
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Join:
+              - _
+              - - Fn::Select:
+                    - "1"
+                    - Fn::GetAZs: ""
+                - PVT
+        - Key: TECENVIRONMENT
+          Value: !Ref TECENVIRONMENT
+        - Key: TECAPPLICATIONROLE
+          Value: !Ref TECAPPLICATIONROLE
+        - Key: TECSYSTEM
+          Value: !Ref TECSYSTEM
+        - Key: BUSOU
+          Value: !Ref BUSOU
+        - Key: BUSOWNER
+          Value: !Ref BUSOWNER
+        - Key: BUSPROJECT
+          Value: !Ref BUSPROJECT
+        - Key: BUSPRODUCT
+          Value: !Ref BUSPRODUCT
+        - Key: AUTOLIFETIME
+          Value: !Ref AUTOLIFETIME
+
+  ## INTERNET GATEWAY
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  GatewayToInternet:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  ## PUBLIC ROUTING
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayToInternet
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  ## NAT GATEWAY
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    DependsOn: NatPublicIP
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      AllocationId: !GetAtt NatPublicIP.AllocationId
+
+  ## ELASTIC IP
+  NatPublicIP:
+    Type: AWS::EC2::EIP
+    DependsOn: PubPrivateVPC
+    Properties:
+      Domain: vpc
+
+  ## PRIVATE ROUTING
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      NatGatewayId: !Ref NatGateway
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable
+
+Outputs:
+  PublicSubnetA:
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: PublicSubnetA
+  PublicSubnetB:
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: PublicSubnetB
+  PrivateSubnetA:
+    Value: !Ref PrivateSubnet1
+    Export:
+      Name: PrivateSubnetA
+  PrivateSubnetB:
+    Value: !Ref PrivateSubnet2
+    Export:
+      Name: PrivateSubnetB
+  VpcId:
+    Value: !Ref PubPrivateVPC
+    Export:
+      Name: VPC

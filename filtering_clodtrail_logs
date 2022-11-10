@@ -1,0 +1,11 @@
+
+
+
+{($.errorCode="AccessDenied*")}
+
+{($.stackName="StackSet-AWSControlTowerGuardrailAWS*")}
+
+{($.useridentity.arn="arn:aws:iam::443659653240:role/GlueETLpipelinerole*")}
+
+
+{($useridentity.principalid="AROAV7AOHKAIGURSYY6AC:i-09eac0bf90fede65a")}

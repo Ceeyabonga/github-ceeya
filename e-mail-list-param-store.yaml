@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create Parameter store
+Parameters:
+  TECENVIRONMENT:
+    Type: String
+    Description: Environment
+  BUSOWNER:
+    Type: String
+    Description: Department
+  TECSYSTEM:
+    Type: String
+    Description: System
+  BUSOU:
+    Type: String
+    Description: Contrlo Tower OU
+    Default: DEV-OU
+Resources:
+  ParameterStore1:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Join
+        - "-"
+        - - !Ref TECENVIRONMENT
+          - email-list
+      Type: StringList
+      Value: !Join
+        - ","
+        - - siya@al.co.za
+          - ceeya@al.co.za
+          - ceeyabonga@gmail.com
+      Description: Parameter store for storing email addresses

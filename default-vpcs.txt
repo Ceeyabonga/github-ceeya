@@ -604,3 +604,188 @@ in ap-southeast-1 Found default vpc vpc-babb4fdc
 in ap-southeast-2 Found default vpc vpc-325f4455
 in eu-central-1 Found default vpc vpc-1f56eb75
 in us-west-1 Found default vpc vpc-09c00d6f
+in ap-south-1 Found default vpc vpc-3434f15f
+in eu-west-3 Found default vpc vpc-d08440b8
+in ap-northeast-3 Found default vpc vpc-fc703595
+in ap-northeast-2 Found default vpc vpc-e259d589
+in ap-northeast-1 Found default vpc vpc-a608ffc0
+in sa-east-1 Found default vpc vpc-d88679be
+in us-west-1 Found default vpc vpc-e009d786
+in eu-north-1 Found default vpc vpc-239c414a
+in ap-south-1 Found default vpc vpc-4bf5fc23
+in eu-west-3 Found default vpc vpc-d1796cb8
+in eu-west-2 Found default vpc vpc-48b3ca20
+in ap-northeast-3 Found default vpc vpc-267e3b4f
+in ap-northeast-2 Found default vpc vpc-e9a47682
+in ap-northeast-1 Found default vpc vpc-f61b1b91
+in sa-east-1 Found default vpc vpc-01e2e266
+in ca-central-1 Found default vpc vpc-c2e6a0aa
+in ap-southeast-1 Found default vpc vpc-dcd4c2bb
+in ap-southeast-2 Found default vpc vpc-7bac961c
+in eu-central-1 Found default vpc vpc-add61bc7
+in us-west-1 Found default vpc vpc-937d9cf5
+in ap-south-1 Found default vpc vpc-70e61d1b
+in eu-west-3 Found default vpc vpc-a156adc9
+in ap-northeast-3 Found default vpc vpc-e671348f
+in ap-northeast-2 Found default vpc vpc-15b6347e
+in ap-northeast-1 Found default vpc vpc-80b440e6
+in sa-east-1 Found default vpc vpc-45e41923
+in us-west-1 Found default vpc vpc-4f33ef29
+in eu-north-1 Found ConfigurationRecorder 
+in ap-south-1 Found ConfigurationRecorder 
+in eu-west-3 Found ConfigurationRecorder 
+in eu-west-2 Found ConfigurationRecorder 
+in eu-west-1 Found ConfigurationRecorder 
+in ap-northeast-3 Found ConfigurationRecorder 
+in ap-northeast-2 Found ConfigurationRecorder 
+in ap-northeast-1 Found ConfigurationRecorder 
+in sa-east-1 Found ConfigurationRecorder 
+in ca-central-1 Found ConfigurationRecorder 
+in ap-southeast-1 Found ConfigurationRecorder 
+in ap-southeast-2 Found ConfigurationRecorder 
+in eu-central-1 Found ConfigurationRecorder 
+in us-east-1 Found ConfigurationRecorder 
+in us-east-2 Found ConfigurationRecorder 
+in us-west-1 Found ConfigurationRecorder 
+in us-west-2 Found ConfigurationRecorder 
+in eu-north-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in ap-south-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in eu-west-3 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in eu-west-2 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in eu-west-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": [
+        {
+            "recordingGroup": {
+                "allSupported": true, 
+                "resourceTypes": [], 
+                "includeGlobalResourceTypes": true
+            }, 
+            "roleARN": "arn:aws:iam::760289928170:role/aws-controltower-ConfigRecorderRole", 
+            "name": "aws-controltower-BaselineConfigRecorder"
+        }
+    ]
+}
+in ap-northeast-3 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in ap-northeast-2 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in ap-northeast-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in sa-east-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in ca-central-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in ap-southeast-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in ap-southeast-2 Found ConfigurationRecorder {
+    "ConfigurationRecorders": [
+        {
+            "recordingGroup": {
+                "allSupported": true, 
+                "resourceTypes": [], 
+                "includeGlobalResourceTypes": true
+            }, 
+            "roleARN": "arn:aws:iam::760289928170:role/aws-controltower-ConfigRecorderRole", 
+            "name": "aws-controltower-BaselineConfigRecorder"
+        }
+    ]
+}
+in eu-central-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in us-east-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": [
+        {
+            "recordingGroup": {
+                "allSupported": true, 
+                "resourceTypes": [], 
+                "includeGlobalResourceTypes": true
+            }, 
+            "roleARN": "arn:aws:iam::760289928170:role/aws-controltower-ConfigRecorderRole", 
+            "name": "aws-controltower-BaselineConfigRecorder"
+        }
+    ]
+}
+in us-east-2 Found ConfigurationRecorder {
+    "ConfigurationRecorders": [
+        {
+            "recordingGroup": {
+                "allSupported": true, 
+                "resourceTypes": [], 
+                "includeGlobalResourceTypes": true
+            }, 
+            "roleARN": "arn:aws:iam::760289928170:role/aws-controltower-ConfigRecorderRole", 
+            "name": "aws-controltower-BaselineConfigRecorder"
+        }
+    ]
+}
+in us-west-1 Found ConfigurationRecorder {
+    "ConfigurationRecorders": []
+}
+in us-west-2 Found ConfigurationRecorder {
+    "ConfigurationRecorders": [
+        {
+            "recordingGroup": {
+                "allSupported": true, 
+                "resourceTypes": [], 
+                "includeGlobalResourceTypes": true
+            }, 
+            "roleARN": "arn:aws:iam::760289928170:role/aws-controltower-ConfigRecorderRole", 
+            "name": "aws-controltower-BaselineConfigRecorder"
+        }
+    ]
+}
+in eu-west-1 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in ap-southeast-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-east-1 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-east-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-west-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in eu-west-1 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in ap-southeast-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-east-1 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-east-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-west-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in eu-west-1 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in ap-southeast-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-east-1 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-east-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in us-west-2 Found ConfigurationRecorder aws-controltower-BaselineConfigRecorder
+in eu-north-1 Found default vpc vpc-3ffb4556
+in ap-south-1 Found default vpc vpc-4cf20427
+in eu-west-3 Found default vpc vpc-d258afba
+in eu-west-2 Found default vpc vpc-7679271e
+in ap-northeast-3 Found default vpc vpc-f395d49a
+in ap-northeast-2 Found default vpc vpc-cbbd04a0
+in ap-northeast-1 Found default vpc vpc-a39172c5
+in sa-east-1 Found default vpc vpc-3854ba5e
+in ca-central-1 Found default vpc vpc-ec2c0e84
+in ap-southeast-1 Found default vpc vpc-370afa51
+in ap-southeast-2 Found default vpc vpc-e7a84f81
+in eu-central-1 Found default vpc vpc-b918f2d3
+in us-west-1 Found default vpc vpc-20777c47
+in eu-north-1 Found default vpc vpc-c19f0ca8
+in ap-south-1 Found default vpc vpc-c8d90ca3
+in eu-west-3 Found default vpc vpc-5aef2532
+in eu-west-2 Found default vpc vpc-55ba8d3d
+in ap-northeast-3 Found default vpc vpc-938fc9fa
+in ap-northeast-2 Found default vpc vpc-2f52ce44
+in ap-northeast-1 Found default vpc vpc-26d81f40
+in sa-east-1 Found default vpc vpc-0e37fb68
+in ca-central-1 Found default vpc vpc-8cf8fde4
+in ap-southeast-1 Found default vpc vpc-822ffae4
+in eu-central-1 Found default vpc vpc-3b650751
+in us-west-1 Found default vpc vpc-5615ba30

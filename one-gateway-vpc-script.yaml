@@ -134,7 +134,6 @@ Resources:
   ## NAT GATEWAY
   NatGateway:
     Type: AWS::EC2::NatGateway
-    DependsOn: NatPublicIP
     Properties:
       SubnetId: !Ref PublicSubnet1
       AllocationId: !GetAtt NatPublicIP.AllocationId
