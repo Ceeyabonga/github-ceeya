@@ -25,7 +25,7 @@ Resources:
       Type: StringList
       Value: !Join
         - ","
-        - - siya@al.co.za
-          - ceeya@al.co.za
-          - ceeyabonga@gmail.com
+        - - user1@example.com
+          - user2@example.com
+          - user3@example.com
       Description: Parameter store for storing email addresses

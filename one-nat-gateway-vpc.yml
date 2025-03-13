@@ -7,7 +7,7 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Metadata:
   Authors:
-    Description: AWS Central Cloud Team (awscct@liberty.co.za)
+    Description: AWS Central Cloud Team
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
@@ -71,7 +71,6 @@ Parameters:
     AllowedValues:
       - CT-PROD
       - CT-DEV
-      - INT-STLBONL-DEV
     Default: CT-DEV
     ConstraintDescription: Must be a valin environment.
     Type: String
@@ -86,13 +85,13 @@ Parameters:
     Default: NETWORK_INFRASTRUCTURE
   BUSOWNER:
     Type: String
-    Default: aws.interim.CT.slbcom.dev@liberty.co.za
+    Default:
   BUSPROJECT:
     Type: String
-    Default: CCT_INFRA
+    Default:
   BUSPRODUCT:
     Type: String
-    Default: AWSCCT_SERVICES
+    Default:
   AUTOLIFETIME:
     Type: String
     Default: PERMANENT
@@ -108,7 +107,7 @@ Parameters:
     Type: String
   taggingconfiglocation:
     Type: String
-    Default: s3://ct-ire-slbcom-dev-scriptlib/Tags.json
+    Default:
   DomainName:
     Type: String
     Default: eu-west-1.compute.internal

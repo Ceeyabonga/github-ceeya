@@ -14,7 +14,7 @@ Parameters:
   InstanceAMI:
     Description: Managed AMI ID for EC2 Instance
     Type : String
-    Default: ami-7707a10f
+    Default:
   IAMRole:
     Description: EC2 attached IAM role
     Type: String
